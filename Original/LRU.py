@@ -6,6 +6,11 @@ class LRUNode:
         self.next = None
 
 class LRUCache:
+    """
+    Implement a Least Recently Used (LRU) cache with a fixed capacity.
+    The cache supports get and put operations with O(1) time complexity.
+    When the cache reaches its capacity, it will evict the least recently used item.
+    """
     def __init__(self, capacity):
         self.capacity = capacity
         self.cache = {}
@@ -15,6 +20,8 @@ class LRUCache:
         self.tail.prev = self.head
 
     def get(self, key):
+        # Retrieve the value associated with the given key if it exists in the cache.
+        # If the key is not found in the cache, return None.
         if key in self.cache:
             node = self.cache[key]
             self._remove(node)
@@ -23,6 +30,8 @@ class LRUCache:
         return None
     
     def put(self, key, value):
+        # Add or update the key-value pair in the cache.
+        # If the cache is full, evict the least recently used item before adding the new key-value pair.
         if key in self.cache:
             self._remove(self.cache[key])
         node = LRUNode(key, value)
@@ -33,12 +42,13 @@ class LRUCache:
             self._remove(node_to_remove)
             del self.cache[node_to_remove.key]
             
-
     def _remove(self, node):
+        # Remove a node from the doubly linked list.
         node.prev.next = node.next
         node.next.prev = node.prev
     
     def _add(self, node):
+         # Add a node to the end of the doubly linked list, right before the tail.
         prev_node = self.tail.prev
         prev_node.next = node
         node.next = self.tail

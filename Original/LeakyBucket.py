@@ -2,13 +2,18 @@ import time
 from collections import deque
 
 class LeakyBucket:
+    """
+    Simulates the leak by removing elements from the bucket based on the leak rate.
+    It calculates the time elapsed since the last leak and updates the bucket accordingly.
+    """
+    
     def __init__(self, leak_rate, capacity):
-        self.leak_rate = leak_rate
-        self.capacity = capacity
-        self.bucket = deque()
-        self.last_leak_time = time.time()
+        self.leak_rate = leak_rate       # Rate at which the bucket leaks
+        self.capacity = capacity         # Maximum capacity of the bucket
+        self.bucket = deque()            # Deque to represent the bucket
+        self.last_leak_time = time.time()  # Time of the last leak
 
-
+    # Simulate the leak by removing elements from the bucket based on the leak rate
     def leak(self):
         current_time = time.time()
         time_elapsed = current_time - self.last_leak_time
@@ -25,7 +30,7 @@ class LeakyBucket:
 
         self.last_leak_time = current_time
 
-    
+    # Check if a request is allowed by the leaky bucket algorithm
     def allow_request(self):
         self.leak()
         if sum(self.bucket) + 1 <= self.capacity:

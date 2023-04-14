@@ -50,9 +50,6 @@ class Trie:
         _search(self.root, pattern, [])
         return result
 
-
-
-
     def __str__(self):
         def _traverse(node, path):
             if node.is_end_of_word:

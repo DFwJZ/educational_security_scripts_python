@@ -16,15 +16,19 @@ class SecureKeyValueStore:
         self.fernet = Fernet(self.__encryption_key)
 
     def put(self, key, value):
+        # Add or update a key-value pair in the store, with the value encrypted.
         self.__store[key] = self.fernet.encrypt(value.encode())
 
     def get(self, key):
+        # Retrieve the value associated with the given key, decrypting it before returning.
+        # If the key is not found in the store, return None.
         encrypted_value = self.__store.get(key)
         if encrypted_value:
             return self.fernet.decrypt(self.__store[key]).decode()
         return None
 
     def delete(self, key):
+        # Remove a key-value pair from the store, if it exists.
         if key in self.__store:
             del self.__store[key]
 

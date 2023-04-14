@@ -12,12 +12,12 @@ class TokenBucket:
     
     """
     def __init__(self, rate, capacity):
-        self.rate = rate
-        self.capacity = capacity
-        self.tokens = capacity
-        self.last_time_to_fill = time.perf_counter()
+        self.rate = rate                     # Rate at which tokens are added to the bucket
+        self.capacity = capacity             # Maximum capacity of the bucket
+        self.tokens = capacity               # Current number of tokens in the bucket
+        self.last_time_to_fill = time.perf_counter()  # Time of the last token refill
 
-    
+    # Refill the token bucket based on the elapsed time and refill rate
     def refill_bucket(self):
         current_time = time.perf_counter()
         time_elapsed = current_time - self.last_time_to_fill
@@ -25,7 +25,7 @@ class TokenBucket:
         self.tokens = min(self.tokens + tokens_to_fill, self.capacity)
         self.last_time_to_fill = current_time if tokens_to_fill > 0 else self.last_time_to_fill
 
-
+    # Check if a request is allowed by the token bucket algorithm
     def ok_request(self):
         self.refill_bucket()
         if self.tokens >= 1:
